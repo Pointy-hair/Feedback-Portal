@@ -1,0 +1,8 @@
+﻿@{
+    var notices = TempData.Get<List<NoticeModel>>("_notices", true) ?? new List<NoticeModel>();
+}
+
+@foreach (var notice in notices)
+{
+    <div class="alert alert-@notice.Type">@notice.Message</div>
+}

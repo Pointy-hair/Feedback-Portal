@@ -1,0 +1,29 @@
+﻿@model FeedbackPortal.ViewModels.Projects.ProjectListViewModel
+
+@{
+    ViewBag.Title = "Projects";
+}
+
+<div class="page-actions">
+    <a asp-action="Create" class="btn btn-success">Create project</a>
+</div>
+
+<table class="table table-condensed table-striped">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Owner</th>
+        <th>Created</th>
+        <th></th>
+    </tr>
+    @foreach (var project in Model.Projects)
+    {
+        <tr>
+            <td><a asp-action="Details" asp-route-key="@project.Key">@project.Name</a></td>
+            <td>@project.Description</td>
+            <td>TBD</td>
+            <td>@project.CreatedOnUtc.ToString("d") <!-- TODO: convert to local/user time --></td>
+            <td><a asp-action="Edit" asp-route-id="@project.Id">Edit</a></td>
+        </tr>
+    }
+</table>

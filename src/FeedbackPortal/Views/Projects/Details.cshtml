@@ -1,0 +1,45 @@
+@model FeedbackPortal.ViewModels.Projects.DetailsViewModel
+
+@{
+    ViewData["Title"] = "Project - " + Model.Project.Name;
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading"><h5>Details</h5></div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Description</dt>
+            <dd>@Model.Project.Description</dd>
+
+            <dt>URL (testing)</dt>
+            <dd><a href="@Model.Project.Url" target="_blank">@Model.Project.Url</a></dd>
+
+            <dt>Owner</dt>
+            <dd>@Model.OwnerUser.FullName</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="issues-wrapper">
+    <h3>Issues</h3>
+    
+    <div class="page-actions">
+        <a asp-controller="Issues" asp-action="Create" asp-route-projectKey="@Model.Project.Key" class="btn btn-success">New issue</a>
+    </div>
+    <div class="issues-list list-group">
+        @foreach (var issue in Model.Issues)
+        {
+            <a href="@Url.Action("Details", "Issues", new {projectKey = Model.Project.Key, id = issue.Id })" class="list-group-item issue @issue.GetCssClasses()" data-issue-id="@issue.Id">
+                <h4 class="list-group-item-heading">@issue.Title</h4>
+                <p class="list-group-item-text">
+                    <span class="issue-create-info">Created @issue.CreatedOnUtc.ToString("d") by @Model.UserLookup.FindUserName(issue.CreatedUserId)</span>
+                    <span class="issue-labels">
+                        <span class="label label-default">@issue.Type</span>
+                        <span class="label label-default">@issue.Severity</span>
+                        <span class="label label-default">@issue.Status</span>
+                    </span>
+                </p>
+            </a>
+        }
+    </div>
+</div>

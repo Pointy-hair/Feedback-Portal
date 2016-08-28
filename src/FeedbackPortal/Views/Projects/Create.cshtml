@@ -1,0 +1,11 @@
+﻿@model FeedbackPortal.ViewModels.Projects.EditProjectViewModel
+
+@{
+    ViewBag.Title = "Create project";
+}
+
+<form method="post" asp-action="Create">
+    @Html.Partial("_EditForm", Model)
+    
+    <button type="submit" id="btn-save-project" class="btn btn-primary">Save project</button>
+</form>

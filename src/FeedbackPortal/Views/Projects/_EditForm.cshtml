@@ -1,0 +1,30 @@
+﻿@model FeedbackPortal.ViewModels.Projects.EditProjectViewModel
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input type="text" asp-for="Name" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label asp-for="Key"></label>
+            <input type="text" asp-for="Key" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="Url"></label>
+            <input type="text" asp-for="Url" class="form-control" />
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label asp-for="IsDisabled">
+                    <input type="checkbox" asp-for="IsDisabled"/>
+                    Disabled
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

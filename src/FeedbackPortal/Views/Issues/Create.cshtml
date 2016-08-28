@@ -1,0 +1,38 @@
+﻿@using FeedbackPortal.Models.Issues
+@model FeedbackPortal.ViewModels.Issues.EditIssueViewModel
+@{
+    ViewData["Title"] = "Create issue for " + Model.Project.Name;
+}
+
+<form method="post" id="create-issue-form" asp-action="Create">
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <label asp-for="Title"></label>
+            <input type="text" asp-for="Title" class="form-control"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="form-control" style="height: 150px;"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 form-group">
+            <label asp-for="Type"></label>
+            <select asp-for="Type" asp-items="@Html.IssueTypesToSelectList()" class="form-control"></select>
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="Severity"></label>
+            <select asp-for="Severity" asp-items="@Html.IssueSeveritiesToSelectList()" class="form-control"></select>
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="Status"></label>
+            <select asp-for="Status" asp-items="@Html.IssueStatusesToSelectList()" class="form-control"></select>
+        </div>
+    </div>
+    
+    <input type="hidden" asp-for="ProjectId"/>
+    
+    <button type="submit" id="btn-save-issue" class="btn btn-primary">Save issue</button>
+</form>

@@ -1,0 +1,34 @@
+﻿@model FeedbackPortal.ViewModels.Issues.DetailsViewModel
+@{
+    Html.SetTitle(Model.Issue.Title.Truncate(50, "..."));
+    Html.SetSubTitle(Model.Project.Name);
+}
+
+<div class="issue-header">
+    <span class="created-info">@Model.UserLookup.FindUserName(Model.Issue.CreatedUserId) created this on @Model.Issue.CreatedOnUtc.ToString("d")</span>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="votes">
+            <span class="user-voting">
+                <button type="button" id="btn-vote-up" class="btn btn-link btn-vote" data-issue-id="@Model.Issue.Id" data-vote="up"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                <button type="button" id="btn-vote-down" class="btn btn-link btn-vote" data-issue-id="@Model.Issue.Id" data-vote="down"><span class="glyphicon glyphicon-thumbs-down text-danger"></span></button>
+            </span>
+            X votes for this - Score = X
+        </div>
+    </div>
+    <div class="col-md-3 issue-info">
+        <dl class="meta">
+            <dt>Status</dt>
+            <dd>@Model.Issue.Status</dd>
+
+            <dt>Type</dt>
+            <dd>@Model.Issue.Type</dd>
+
+            <dt>Severity</dt>
+            <dd>@Model.Issue.Severity</dd>
+        </dl>
+    </div>
+</div>
+
