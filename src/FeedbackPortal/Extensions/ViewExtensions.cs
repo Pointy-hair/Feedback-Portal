@@ -41,6 +41,16 @@ namespace FeedbackPortal.Extensions
             return htmlHelper.ViewData[SubTitleViewDataKey] as string;
         }
 
+        public static string ToFriendlyLower(this Enum val)
+        {
+            return val.ToFriendly().ToLower();
+        }
+
+        public static string ToFriendly(this Enum val)
+        {
+            return val.ToString("G");
+        }
+
         public static void Put<T>(this ITempDataDictionary td, string key, T data) where T : class, new()
         {
             td[key] = JsonConvert.SerializeObject(data);

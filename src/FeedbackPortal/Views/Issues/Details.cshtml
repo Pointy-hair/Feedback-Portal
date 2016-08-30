@@ -5,30 +5,136 @@
 }
 
 <div class="issue-header">
-    <span class="created-info">@Model.UserLookup.FindUserName(Model.Issue.CreatedUserId) created this on @Model.Issue.CreatedOnUtc.ToString("d")</span>
+    <h4 class="created-info">
+        <span class="status @Model.Issue.Status.ToFriendlyLower()">@Model.Issue.Status.ToFriendly()</span>
+        <span class="type @Model.Issue.Type.ToFriendlyLower()">@Model.Issue.Type.ToFriendly()</span>
+
+        @Model.UserLookup.FindUserName(Model.Issue.CreatedUserId) created this on @Html.Raw(Model.Issue.CreatedOnUtc.ToRelativeTimeTag())
+    </h4>
+    
+</div>
+
+<div class="page-actions">
+    <div class="btn-group update-status">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @Model.Issue.Status.ToFriendly() <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            @foreach (var status in Model.Issue.Status.ToSelectList())
+            {
+                var statusVal = status.Value.ToLower();
+                <li class="@(statusVal == Model.Issue.Status.ToFriendlyLower() ? "active" : "")"><a href="#" data-status="@status.Value">@status.Text</a></li>
+            }
+        </ul>
+    </div>
+</div>
+
+<div class="well well-sm issue-description">
+    @Html.Raw(Model.Issue.Description)
 </div>
 
 <div class="row">
     <div class="col-md-9">
-        <div class="votes">
+        @*<div class="votes">
             <span class="user-voting">
                 <button type="button" id="btn-vote-up" class="btn btn-link btn-vote" data-issue-id="@Model.Issue.Id" data-vote="up"><span class="glyphicon glyphicon-thumbs-up"></span></button>
                 <button type="button" id="btn-vote-down" class="btn btn-link btn-vote" data-issue-id="@Model.Issue.Id" data-vote="down"><span class="glyphicon glyphicon-thumbs-down text-danger"></span></button>
             </span>
             X votes for this - Score = X
+        </div>*@
+        
+        <div class="comment-wrapper">
+            <div class="panel panel-success add-comment">
+                <div class="panel-heading">Add a comment</div>
+                <div class="panel-body">
+                    <form id="comment-form" asp-controller="Comments" asp-action="Create" asp-route-projectKey="@Model.Project.Key" asp-route-issueId="@Model.Issue.Id">
+                        <div class="form-group">
+                            <textarea id="txt-comment-text" name="text" class="form-control" placeholder="Enter your comment here"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Comment</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="comment-list"></div>
         </div>
     </div>
-    <div class="col-md-3 issue-info">
-        <dl class="meta">
-            <dt>Status</dt>
-            <dd>@Model.Issue.Status</dd>
-
-            <dt>Type</dt>
-            <dd>@Model.Issue.Type</dd>
-
-            <dt>Severity</dt>
-            <dd>@Model.Issue.Severity</dd>
-        </dl>
+    <div class="col-md-3">
     </div>
 </div>
 
+@section scripts
+{
+    <script>
+        $(document).on('ready', function () {
+            var $commentForm = $('#comment-form'),
+                $txtComment = $('#txt-comment-text'),
+                $commentList = $('.comment-list'),
+                $dlUpdateStatus = $('.update-status');
+
+            $dlUpdateStatus.on('click', 'a', function(e) {
+                e.preventDefault();
+
+                var status = $(this).data('status');
+
+                $.ajax({
+                    url: '@Url.Action("UpdateStatus", new {projectKey = Model.Project.Key, id = Model.Issue.Id})',
+                    type: 'POST',
+                    data: { status: status },
+                    success: function() {
+                        window.location.href = window.location.href;
+                    },
+                    error: function(jqXhr) {
+                        alert('Error updating status: ' + jqXhr.statusText);
+                    }
+                });
+            });
+
+            $commentList.on('click', '.btn-delete-comment', function(e) {
+                e.preventDefault();
+
+                if (!confirm('Are you sure you want to delete this comment?'))
+                    return;
+
+                var commentId = $(this).data('id');
+
+                $.ajax({
+                    url: '@Url.Action("Delete", "Comments", new {projectKey = Model.Project.Key, issueId = Model.Issue.Id})',
+                    type: 'DELETE',
+                    data: { id: commentId },
+                    success: function () {
+                        refreshComments();
+                    }
+                });
+            });
+
+            var refreshComments = function () {
+                $.ajax({
+                    url:
+                        '@Url.Action("Get", "Comments", new {projectKey = Model.Project.Key, issueId = Model.Issue.Id})',
+                    type: 'GET',
+                    success: function(data) {
+                        $commentList.html(data);
+                    }
+                });
+            }
+
+            $commentForm.on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: { text: $txtComment.val() },
+                    success: function () {
+                        $txtComment.val(null);
+                        refreshComments();
+                    }
+                });
+            });
+
+            refreshComments();
+        });
+    </script>
+}

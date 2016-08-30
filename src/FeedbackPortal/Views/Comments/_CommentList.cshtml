@@ -1,0 +1,24 @@
+﻿@model IEnumerable<FeedbackPortal.ViewModels.Comments.CommentModel>
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+}
+@foreach (var comment in Model)
+{
+    <div class="panel panel-default comment" data-comment-id="@comment.Id">
+        <div class="panel-body">@Html.Raw(comment.Text)</div>
+        <div class="panel-footer">
+            Posted @Html.Raw(comment.CreatedOnUtc.ToRelativeTimeTag()) by @comment.PostedByUser.FullName
+            
+            <div class="pull-right">
+                @if (comment.CreatedUserId == currentUser.Id)
+                {
+                    <a href="#" class="btn-delete-comment" data-id="@comment.Id">
+                        <span class="glyphicon glyphicon-trash text-warning"></span>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}

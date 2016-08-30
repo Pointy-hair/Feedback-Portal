@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using FeedbackPortal.Models.Comments;
 using FeedbackPortal.Models.Projects;
 
 namespace FeedbackPortal.Models.Issues
@@ -33,6 +34,9 @@ namespace FeedbackPortal.Models.Issues
         public virtual List<IssueVote> Votes { get; set; }
         public int VoteCount { get; set; }
 
+        public virtual List<Comment> Comments { get; set; }
+        public int CommentCount { get; set; }
+
         public Issue()
         {
             Type = IssueType.Comment;
@@ -40,6 +44,7 @@ namespace FeedbackPortal.Models.Issues
             Status = IssueStatus.New;
 
             Votes = new List<IssueVote>();
+            Comments = new List<Comment>();
         }
     }
 }

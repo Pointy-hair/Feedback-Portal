@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using FeedbackPortal.Models;
+using FeedbackPortal.Models.Comments;
 using FeedbackPortal.Models.Issues;
 using FeedbackPortal.Models.Projects;
 
@@ -16,6 +17,7 @@ namespace FeedbackPortal.Data
 
         public DbSet<Issue> Issues { get; set; }
         public DbSet<IssueVote> IssueVotes { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

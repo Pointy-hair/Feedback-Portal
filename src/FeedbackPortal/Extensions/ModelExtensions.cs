@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FeedbackPortal.Models;
+using FeedbackPortal.Models.Comments;
 using FeedbackPortal.Models.Issues;
 using FeedbackPortal.Models.Projects;
+using FeedbackPortal.ViewModels.Comments;
 using FeedbackPortal.ViewModels.Common;
 using FeedbackPortal.ViewModels.Issues;
 using FeedbackPortal.ViewModels.Projects;
@@ -54,6 +56,19 @@ namespace FeedbackPortal.Extensions
                     Title = issue.Title,
                     Description = issue.Description,
                     VoteCount = issue.VoteCount
+                };
+            return model;
+        }
+
+        public static CommentModel ToModel(this Comment comment)
+        {
+            var model = new CommentModel
+                {
+                    Id = comment.Id,
+                    IssueId = comment.IssueId,
+                    CreatedUserId = comment.CreatedUserId,
+                    CreatedOnUtc = comment.CreatedOnUtc,
+                    Text = comment.Text
                 };
             return model;
         }

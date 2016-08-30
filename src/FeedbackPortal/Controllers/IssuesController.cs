@@ -115,5 +115,30 @@ namespace FeedbackPortal.Controllers
                 return View(model);
             }
         }
+
+        [HttpPost, Route("{id}/status")]
+        public async Task<IActionResult> UpdateStatus(string projectKey, int id, IssueStatus status)
+        {
+            try
+            {
+                var issue = await _dbContext.Issues.SingleOrDefaultAsync(x => x.Id == id);
+                if (issue == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                issue.Status = status;
+
+                await _dbContext.SaveChangesAsync();
+
+                return Json(new {id, status});
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(305, ex, ex.Message, new {id, status});
+
+                return new StatusCodeResult(500);
+            }
+        }
     }
 }

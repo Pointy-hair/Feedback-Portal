@@ -8,9 +8,10 @@ using FeedbackPortal.Data;
 namespace FeedbackPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160828060711_CreateComments")]
+    partial class CreateComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -74,7 +75,7 @@ namespace FeedbackPortal.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreatedOnUtc");
+                    b.Property<DateTime>("CreatedOn");
 
                     b.Property<string>("CreatedUserId")
                         .IsRequired()
