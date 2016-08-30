@@ -44,7 +44,8 @@
       "type": "build"
     },
     "Microsoft.AspNetCore.Session": "1.0.0",
-    "Microsoft.Extensions.Caching.Memory": "1.0.0"
+    "Microsoft.Extensions.Caching.Memory": "1.0.0",
+    "Microsoft.AspNetCore.Authentication.Google": "1.0.0"
   },
 
   "tools": {

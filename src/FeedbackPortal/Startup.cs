@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using FeedbackPortal.Data;
 using FeedbackPortal.Models;
 using FeedbackPortal.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FeedbackPortal
 {
@@ -55,6 +56,10 @@ namespace FeedbackPortal
             }); 
 
             services.AddMvc();
+            services.Configure<MvcOptions>(opts =>
+            {
+                opts.Filters.Add(new RequireHttpsAttribute());
+            });
             
             services.AddSession(opts =>
             {
@@ -90,8 +95,15 @@ namespace FeedbackPortal
 
             app.UseIdentity();
 
+            app.UseGoogleAuthentication(new GoogleOptions
+                {
+                    ClientId = Configuration["Authentication:Google:AppId"],
+                    ClientSecret = Configuration["Authentication:Google:AppSecret"],
+                    DisplayName = "Google+"
+                });
+
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
-            
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

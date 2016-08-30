@@ -310,6 +310,7 @@ namespace FeedbackPortal.Controllers
 
         //
         // GET: /Manage/LinkLoginCallback
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> LinkLoginCallback()
         {
