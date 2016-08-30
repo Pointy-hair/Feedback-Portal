@@ -109,18 +109,13 @@
                 });
             });
 
-            var refreshComments = function () {
-                $.ajax({
-                    url:
-                        '@Url.Action("Get", "Comments", new {projectKey = Model.Project.Key, issueId = Model.Issue.Id})',
-                    type: 'GET',
-                    success: function(data) {
-                        $commentList.html(data);
-                    }
-                });
-            }
+            $txtComment.on('keydown', function(evt) {
+                if ((evt.keyCode === 10 || evt.keyCode === 13) && evt.ctrlKey) {
+                    $commentForm.submit();
+                }
+            });
 
-            $commentForm.on('submit', function(e) {
+            $commentForm.on('submit', function (e) {
                 e.preventDefault();
 
                 $.ajax({
@@ -133,6 +128,17 @@
                     }
                 });
             });
+
+            var refreshComments = function () {
+                $.ajax({
+                    url:
+                        '@Url.Action("Get", "Comments", new {projectKey = Model.Project.Key, issueId = Model.Issue.Id})',
+                    type: 'GET',
+                    success: function(data) {
+                        $commentList.html(data);
+                    }
+                });
+            }
 
             refreshComments();
         });
